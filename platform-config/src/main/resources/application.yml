@@ -40,3 +40,11 @@ logging:
   level:
     org.springframework.cloud.config: DEBUG
     org.springframework.web: INFO
+    com.platform.config: DEBUG
+
+# 配置管理 API 文档
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
