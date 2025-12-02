@@ -18,10 +18,17 @@ This document records the development environment configuration for the Platform
 
 | Item | Value |
 |------|-------|
-| Version | JDK 25 |
+| Version | 25.0.1 LTS |
 | Installation Path | `C:\Program Files\Java\jdk-25` |
 | Environment Variable | `JAVA_HOME=C:\Program Files\Java\jdk-25` |
 | PATH Addition | `C:\Program Files\Java\jdk-25\bin` |
+
+**Verification Output**:
+```
+java version "25.0.1" 2025-10-21 LTS
+Java(TM) SE Runtime Environment (build 25.0.1+8-LTS-27)
+Java HotSpot(TM) 64-Bit Server VM (build 25.0.1+8-LTS-27, mixed mode, sharing)
+```
 
 **Verification Command**:
 ```bash
@@ -39,18 +46,35 @@ echo %JAVA_HOME%
 | Environment Variable | `MAVEN_HOME=D:\Program Files\apache-maven-3.9.11` |
 | PATH Addition | `D:\Program Files\apache-maven-3.9.11\bin` |
 
+**Verification Output**:
+```
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: D:\Program Files\apache-maven-3.9.11
+Java version: 25.0.1, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk-25
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+```
+
 **Verification Command**:
 ```bash
 mvn -version
 echo %MAVEN_HOME%
 ```
 
-### 3. Python
+### 3. Python 3.13.5
 
 | Item | Value |
 |------|-------|
-| Version | 3.x (installed via IntelliJ IDEA) |
-| Package Manager | pip |
+| Version | 3.13.5 |
+| Installation Path | `C:\Users\John\AppData\Local\Programs\Python\Python313` |
+| Scripts Path | `C:\Users\John\AppData\Local\Programs\Python\Python313\Scripts` |
+| Package Manager | pip 25.1.1 |
+
+**Verification Output**:
+```
+Python 3.13.5
+pip 25.1.1 from C:\Users\John\AppData\Local\Programs\Python\Python313\Lib\site-packages\pip (python 3.13)
+```
 
 **Verification Command**:
 ```bash
@@ -66,6 +90,12 @@ pip --version
 | Installation Method | Executable installer (.exe) |
 | Package Manager | npm 11.6.2 |
 
+**Verification Output**:
+```
+v24.11.1
+11.6.2
+```
+
 **Verification Command**:
 ```bash
 node --version
@@ -77,8 +107,15 @@ npm --version
 | Item | Value |
 |------|-------|
 | Version | 0.9.13 |
+| Build | 7ca92dcf6 2025-11-26 |
 | Installation Method | winget |
 | Includes | uv, uvx |
+
+**Verification Output**:
+```
+uv 0.9.13 (7ca92dcf6 2025-11-26)
+uvx 0.9.13 (7ca92dcf6 2025-11-26)
+```
 
 **Installation Command**:
 ```powershell
@@ -99,37 +136,43 @@ uvx --version
 
 The following environment variables were configured at the system level:
 
+| Variable | Value |
+|----------|-------|
+| `JAVA_HOME` | `C:\Program Files\Java\jdk-25` |
+| `MAVEN_HOME` | `D:\Program Files\apache-maven-3.9.11` |
+
+### PATH Additions
+
+The following paths were added to the system PATH:
+
+```
+C:\Program Files\Java\jdk-25\bin
+D:\Program Files\apache-maven-3.9.11\bin
+C:\Users\John\AppData\Local\Programs\Python\Python313
+C:\Users\John\AppData\Local\Programs\Python\Python313\Scripts
+```
+
+### Configuration Commands (PowerShell as Administrator)
+
 ```powershell
-# JAVA_HOME
+# Set JAVA_HOME
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-25", [System.EnvironmentVariableTarget]::Machine)
 
-# MAVEN_HOME
+# Set MAVEN_HOME
 [System.Environment]::SetEnvironmentVariable("MAVEN_HOME", "D:\Program Files\apache-maven-3.9.11", [System.EnvironmentVariableTarget]::Machine)
 
-# PATH additions
+# Add Java and Maven to PATH
 $currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
 $newPath = $currentPath + ";C:\Program Files\Java\jdk-25\bin;D:\Program Files\apache-maven-3.9.11\bin"
 [System.Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::Machine)
+
+# Add Python to PATH
+$pythonPath = "C:\Users\John\AppData\Local\Programs\Python\Python313"
+$scriptsPath = "C:\Users\John\AppData\Local\Programs\Python\Python313\Scripts"
+$currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+$newPath = $currentPath + ";" + $pythonPath + ";" + $scriptsPath
+[System.Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::Machine)
 ```
-
-### Configuration Steps
-
-1. **Open PowerShell as Administrator**
-2. **Set JAVA_HOME**:
-   ```powershell
-   [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-25", [System.EnvironmentVariableTarget]::Machine)
-   ```
-3. **Set MAVEN_HOME**:
-   ```powershell
-   [System.Environment]::SetEnvironmentVariable("MAVEN_HOME", "D:\Program Files\apache-maven-3.9.11", [System.EnvironmentVariableTarget]::Machine)
-   ```
-4. **Update PATH**:
-   ```powershell
-   $currentPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
-   $newPath = $currentPath + ";C:\Program Files\Java\jdk-25\bin;D:\Program Files\apache-maven-3.9.11\bin"
-   [System.Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::Machine)
-   ```
-5. **Restart terminal** to apply changes
 
 ---
 
@@ -146,7 +189,7 @@ Write-Host ""
 # Java
 Write-Host "[Java]" -ForegroundColor Yellow
 Write-Host "JAVA_HOME: $env:JAVA_HOME"
-java -version 2>&1 | Select-Object -First 1
+java -version 2>&1 | Select-Object -First 3
 Write-Host ""
 
 # Maven
@@ -184,10 +227,10 @@ Write-Host "========================================" -ForegroundColor Green
 
 | Tool | Version | Status |
 |------|---------|--------|
-| JDK | 25 | Configured |
+| JDK | 25.0.1 LTS | Configured |
 | Maven | 3.9.11 | Configured |
-| Python | 3.x | Installed |
-| pip | (bundled) | Installed |
+| Python | 3.13.5 | Configured |
+| pip | 25.1.1 | Configured |
 | Node.js | v24.11.1 | Installed |
 | npm | 11.6.2 | Installed |
 | uv | 0.9.13 | Installed |
@@ -207,6 +250,10 @@ Write-Host "========================================" -ForegroundColor Green
    - `uv pip install <package>` - Install packages
    - `uvx <tool>` - Run Python tools directly
 
+5. **Python Launcher**: Windows also provides `py` command as Python launcher:
+   - `py -3` - Run Python 3
+   - `py -m pip` - Run pip module
+
 ---
 
 ## Troubleshooting
@@ -218,7 +265,7 @@ Write-Host "========================================" -ForegroundColor Green
 2. If using IDE, restart the IDE
 3. Verify PATH contains the correct directories:
    ```powershell
-   $env:Path -split ';' | Where-Object { $_ -like '*java*' -or $_ -like '*maven*' }
+   $env:Path -split ';' | Where-Object { $_ -like '*java*' -or $_ -like '*maven*' -or $_ -like '*python*' }
    ```
 
 ### Issue: Wrong Java version
@@ -240,8 +287,19 @@ echo $env:JAVA_HOME
 # Should be: C:\Program Files\Java\jdk-25
 ```
 
+### Issue: pip command not found
+
+**Solution**: Use Python module syntax or verify PATH:
+```powershell
+# Option 1: Use py launcher
+py -m pip --version
+
+# Option 2: Verify Python Scripts in PATH
+$env:Path -split ';' | Where-Object { $_ -like '*Python*Scripts*' }
+```
+
 ---
 
 **Document Created**: 2025-12-02
 **Last Updated**: 2025-12-02
-**Status**: Complete
+**Status**: Complete - All tools verified and working
