@@ -1,0 +1,41 @@
+# Multi-stage build for Platform Test Application
+# Stage 1: Build with Maven
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
+
+WORKDIR /build
+
+# Copy parent POM and platform-common first (for better layer caching)
+COPY pom.xml .
+COPY platform-common/pom.xml platform-common/
+COPY platform-common/src platform-common/src
+
+# Copy test module
+COPY platform-test/pom.xml platform-test/
+COPY platform-test/src platform-test/src
+
+# Build the project (skip tests for faster build)
+RUN mvn clean package -pl platform-test -am -DskipTests
+
+# Stage 2: Runtime
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+
+# Copy the built JAR from builder stage
+COPY --from=builder /build/platform-test/target/platform-test-*.jar app.jar
+
+# Expose port
+EXPOSE 8080
+
+# Set environment variables (can be overridden)
+ENV SPRING_CLOUD_CONFIG_URI="http://platform-config:8888"
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --start-period=40s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/test/health || exit 1
+
+# Run the application
+ENTRYPOINT ["java", \
+    "-Djava.security.egd=file:/dev/./urandom", \
+    "-jar", \
+    "app.jar"]

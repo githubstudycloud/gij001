@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Config Server - builds and runs
+  platform-config:
+    build:
+      context: .
+      dockerfile: Dockerfile.config
+    container_name: platform-config
+    ports:
+      - "8888:8888"
+    environment:
+      - GITLAB_TOKEN=${GITLAB_TOKEN:-your-gitlab-token-here}
+      - GITLAB_REPO_URL=${GITLAB_REPO_URL:-http://192.168.0.99:8929/xz01/springconfig.git}
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # Test Application - builds and runs
+  platform-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: platform-test
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CLOUD_CONFIG_URI=http://platform-config:8888
+    depends_on:
+      platform-config:
+        condition: service_healthy
+    networks:
+      - platform-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/test/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+networks:
+  platform-network:
+    driver: bridge

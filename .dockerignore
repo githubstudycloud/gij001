@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+*.iml
+.vscode
+.settings
+.classpath
+.project
+
+# Build
+target/
+*.class
+*.jar
+*.war
+
+# Documentation
+doc/
+*.md
+!README.md
+
+# Scripts
+*.sh
+*.ps1
+*.bat
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

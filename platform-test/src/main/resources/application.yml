@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: platform-test
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.platform: DEBUG
+    org.springframework.web: INFO
+    org.springframework.cloud.config: DEBUG
+
+# Test configuration (will be overridden by config server if available)
+test:
+  message: "Hello from local configuration!"
