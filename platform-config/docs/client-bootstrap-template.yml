@@ -6,8 +6,8 @@
 spring:
   application:
     # 应用名称，对应配置文件名 (不含 .properties 后缀)
-    # 例如: project1-v1-pub 对应 config/env{profile}/project1-v1-pub.properties
-    name: ${APP_NAME:project1-v1-pub}
+    # 例如: project1-v1 对应 config/env{profile}/project1-v1.properties
+    name: ${APP_NAME:project1-v1}
 
   cloud:
     config:
@@ -23,7 +23,7 @@ spring:
 
       # 配置文件名 (可指定多个，用逗号分隔)
       # 第一个是项目专属配置，第二个是全局公共配置
-      name: ${CONFIG_NAME:${spring.application.name},GlobalConfig-pub}
+      name: ${CONFIG_NAME:${spring.application.name},GlobalConfig}
 
       # 连接失败时快速失败
       fail-fast: ${CONFIG_FAIL_FAST:true}
@@ -59,7 +59,7 @@ spring:
 #    或设置环境变量: SPRING_CLOUD_CONFIG_URI=http://config:8888
 #
 # 5. 加载多个配置文件 (项目配置 + 全局配置):
-#    spring.cloud.config.name=project1-v1-pub,GlobalConfig-pub
+#    spring.cloud.config.name=project1-v1,GlobalConfig
 #    配置优先级: 项目配置 > 全局配置
 #
 # ============================================
@@ -70,5 +70,5 @@ spring:
 # profile=beta  -> 搜索路径: config/envbeta/
 # profile=pro   -> 搜索路径: config/envpro/
 #
-# name=project1-v1-pub -> 文件: project1-v1-pub.properties
-# name=GlobalConfig-pub -> 文件: GlobalConfig-pub.properties
+# name=project1-v1 -> 文件: project1-v1.properties
+# name=GlobalConfig -> 文件: GlobalConfig.properties
