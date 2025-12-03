@@ -20,8 +20,8 @@ spring:
           # Authentication
           username: oauth2
           password: ${GITLAB_TOKEN}
-          # Clone on startup
-          clone-on-start: true
+          # Clone on startup (set to false for testing without GitLab)
+          clone-on-start: ${CLONE_ON_START:false}
           # Skip SSL validation (for self-signed certificates)
           skip-ssl-validation: false
           # Timeout settings
