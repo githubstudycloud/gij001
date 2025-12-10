@@ -47,3 +47,9 @@ check-dev-env.ps1
 .env
 .env.local
 .env.*.local
+
+### Spec-Kit (GitHub Specification-Driven Development) ###
+# Keep .specify folder local, avoid conflicts with remote
+.specify/
+# Agent prompts are version controlled separately
+# .github/copilot-instructions.md
