@@ -1,0 +1,102 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: platform-server
+  profiles:
+    active: dev
+
+  # Jackson 配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+  # 数据源配置（后续启用）
+  # datasource:
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+  #   url: jdbc:mysql://localhost:3306/platform?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+  #   username: root
+  #   password: root
+
+  # Redis 配置（后续启用）
+  # data:
+  #   redis:
+  #     host: localhost
+  #     port: 6379
+  #     database: 0
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.platform: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+
+# 平台配置
+platform:
+  web:
+    # XSS 过滤
+    xss:
+      enabled: true
+      exclude-urls:
+        - /api/upload/**
+    # 请求日志
+    request-log:
+      enabled: true
+      exclude-urls:
+        - /actuator/**
+        - /favicon.ico
+
+# Knife4j 文档配置
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.platform
+
+# Actuator 配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# MyBatis-Plus 配置（后续启用）
+# mybatis-plus:
+#   mapper-locations: classpath*:mapper/**/*.xml
+#   type-aliases-package: com.platform.**.domain
+#   global-config:
+#     db-config:
+#       id-type: ASSIGN_ID
+#       logic-delete-field: deleted
+#       logic-delete-value: 1
+#       logic-not-delete-value: 0
+#   configuration:
+#     map-underscore-to-camel-case: true
+#     cache-enabled: false
+#     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl

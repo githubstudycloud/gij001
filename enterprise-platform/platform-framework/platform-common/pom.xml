@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.platform</groupId>
+        <artifactId>platform-framework</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>platform-common</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Platform Common</name>
+    <description>公共模块集合</description>
+
+    <modules>
+        <module>platform-common-core</module>
+        <module>platform-common-web</module>
+        <!-- 后续添加更多模块 -->
+        <!-- <module>platform-common-security</module> -->
+        <!-- <module>platform-common-mybatis</module> -->
+        <!-- <module>platform-common-redis</module> -->
+    </modules>
+
+</project>
